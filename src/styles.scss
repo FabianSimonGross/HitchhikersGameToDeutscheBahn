@@ -1,1 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.rollButton {
+  width: 70%;
+}
+
+.diceComponent {
+  padding: 10%;
+}
+
+.diceInformation {
+  margin: 5%;
+  width: 80%;
+}
+
+.station-form {
+  display: flex;
+  justify-content: center;
+  margin: 100px;
+  width: 100%;
+}
+
+.station-name {
+  width: 100%;
+}

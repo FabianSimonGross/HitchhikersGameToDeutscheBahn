@@ -1,0 +1,13 @@
+<div *ngIf="isLoading" class="center diceComponent">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="!isLoading" class="diceComponent">
+  <mat-card>
+    <h3>Next Track</h3>
+    <h1>4</h1>
+
+    <h3>How many Stations</h3>
+    <h1>7</h1>
+  </mat-card>
+</div>
