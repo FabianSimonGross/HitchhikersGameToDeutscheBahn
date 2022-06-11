@@ -44,6 +44,5 @@ export class AppComponent {
   getStationsByStartOfZip(zipCode: string): Observable<any> {
     return this.http.get(`${environment.uri}/stations?zipCode=${zipCode.substring(0,2)}`);
   }
-
 }
 

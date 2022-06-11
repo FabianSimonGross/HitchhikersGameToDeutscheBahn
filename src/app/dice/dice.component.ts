@@ -1,4 +1,7 @@
 import { Component, Input } from '@angular/core';
+import {Observable} from "rxjs";
+import {environment} from "../../environments/environment";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-dice',
@@ -26,6 +29,10 @@ export class DiceComponent {
     this.stationsToRide = Math.floor(Math.random() * 7) + 1;
   }
 
-  constructor() {
+  constructor(private http: HttpClient) {
+  }
+
+  getMaxAmountOfStations(ds100: string, track: string): Observable<any> {
+    return this.http.get(`${environment.uri}/${ds100}/${track}`);
   }
 }
