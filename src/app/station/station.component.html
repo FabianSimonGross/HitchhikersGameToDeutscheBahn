@@ -1,8 +1,17 @@
 <div class="center">
   <form class="station-form">
+
     <mat-form-field class="station-name" appearance="outline">
       <mat-label>Wähle deine aktuelle Station aus!</mat-label>
-      <input matInput placeholder="Ingolstadt">
+
+      <input type="text" placeholder="Pick one" matInput [formControl]="stationControl" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let station of filteredStations | async" [value]="station.name">
+          {{station.name}}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
+
   </form>
 </div>
+

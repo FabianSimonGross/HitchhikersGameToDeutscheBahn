@@ -2,14 +2,14 @@
   <span>Hitchhikers Game to Deutsche Bahn</span>
 </mat-toolbar>
 
-  <app-dice>
-  </app-dice>
+<app-dice [stations]="stations">
+</app-dice>
 
-  <app-station>
-  </app-station>
+<app-station [stations]="stations">
+</app-station>
 
-  <div class="center">
-    <button mat-raised-button color="primary" class="rollButton">
-      <span>Roll the Gleis!</span>
-    </button>
-  </div>
+<div class="center">
+  <button mat-raised-button color="primary" class="rollButton">
+    <span>Roll the Gleis!</span>
+  </button>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-dice',
@@ -6,12 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dice.component.scss']
 })
 
-export class DiceComponent implements OnInit {
+export class DiceComponent {
   isLoading: boolean = false;
 
-  constructor() { }
+  @Input() stations: any = [];
 
-  ngOnInit(): void {
+  constructor() {
+    console.log("Fuck " + this.stations)
+
   }
-
 }
