@@ -2,10 +2,10 @@
   <span>Hitchhikers Game to Deutsche Bahn</span>
 </mat-toolbar>
 
-<app-dice [stations]="stations">
+<app-dice [stations]="currentStationArray">
 </app-dice>
 
-<app-station [stations]="stations">
+<app-station [stations]="areaStationsArray" [currentStation]="currentStationArray">
 </app-station>
 
 <div class="center">

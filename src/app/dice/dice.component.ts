@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-dice',
@@ -7,12 +7,25 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 
 export class DiceComponent {
-  isLoading: boolean = false;
-
   @Input() stations: any = [];
+  isLoading: boolean = true;
+
+  track: number = 0;
+  stationsToRide: number = 0;
+
+  ngOnChanges() {
+    if(this.stations.length == 0) {
+      this.isLoading = true;
+      return;
+    }
+    this.isLoading = false;
+
+    let randomStation = Math.floor(Math.random() * this.stations.length);
+    this.track = Math.floor(Math.random() * this.stations[randomStation].platforms.length) + 1;
+
+    this.stationsToRide = Math.floor(Math.random() * 7) + 1;
+  }
 
   constructor() {
-    console.log("Fuck " + this.stations)
-
   }
 }

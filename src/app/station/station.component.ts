@@ -6,6 +6,7 @@
 
 export class StationComponent {
   @Input() stations: any = [];
+  @Input() currentStation: any = [];
   stationControl = new FormControl('');
   filteredStations: Observable<any[]>;
 
@@ -16,15 +17,14 @@ export class StationComponent {
     );
   }
 
-
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.stations.filter((station: any) => station.name.toLowerCase().includes(filterValue));
 
   }
 }
-import { Component, Input, OnInit } from '@angular/core';
+
+import {Component, Input} from '@angular/core';
 import {FormControl} from "@angular/forms";
 
 import {map, Observable, startWith} from "rxjs";
-

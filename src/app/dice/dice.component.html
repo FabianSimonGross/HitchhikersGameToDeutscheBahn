@@ -5,9 +5,12 @@
 <div *ngIf="!isLoading" class="diceComponent">
   <mat-card>
     <h3>Next Track</h3>
-    <h1>4</h1>
+    <h1>{{track}}</h1>
 
-    <h3>How many Stations</h3>
-    <h1>7</h1>
+    <h3>How many Stations to ride</h3>
+    <h1>{{stationsToRide}}</h1>
+
+    <h3>Current Station</h3>
+    <h1 *ngFor="let station of stations">{{station.name}}</h1>
   </mat-card>
 </div>
