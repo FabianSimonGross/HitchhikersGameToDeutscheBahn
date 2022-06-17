@@ -16,6 +16,7 @@ export class AppComponent {
 
   areaStations: any = [];
   maxStationsToGo: number = 0;
+  automatic: boolean = true;
 
 
   constructor(private http: HttpClient, private service: LocationService) {
