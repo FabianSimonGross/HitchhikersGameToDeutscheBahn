@@ -1,7 +1,6 @@
-import { Component, Input } from '@angular/core';
-import {Observable} from "rxjs";
-import {environment} from "../../environments/environment";
-import {HttpClient} from "@angular/common/http";
+import {Component, Input} from '@angular/core';
+import StationsJSON from "../../assets/stations.json";
+
 
 @Component({
   selector: 'app-dice',
@@ -10,29 +9,45 @@ import {HttpClient} from "@angular/common/http";
 })
 
 export class DiceComponent {
-  @Input() stations: any = [];
+  @Input() areaStations: any = [];
+  @Input() maxStationsToGo: number = 0;
+
   isLoading: boolean = true;
 
-  track: number = 0;
-  stationsToRide: number = 0;
+  track: number = -1;
+  stationsToRide: number = -1;
 
   ngOnChanges() {
-    if(this.stations.length == 0) {
+    if(this.areaStations.length == 0) {
       this.isLoading = true;
       return;
     }
     this.isLoading = false;
 
-    let randomStation = Math.floor(Math.random() * this.stations.length);
-    this.track = Math.floor(Math.random() * this.stations[randomStation].platforms.length) + 1;
-
-    this.stationsToRide = Math.floor(Math.random() * 7) + 1;
+    this.track = this.getRandomNumberInRange(1, this.getAmountOfTracks());
+    this.stationsToRide = this.getRandomNumberInRange(1, this.maxStationsToGo);
   }
 
-  constructor(private http: HttpClient) {
+  constructor() {
   }
 
-  getMaxAmountOfStations(ds100: string, track: string): Observable<any> {
-    return this.http.get(`${environment.uri}/${ds100}/${track}`);
+  getAmountOfTracks() : number {
+    let amt: number = 2;
+
+    for (const station of StationsJSON) {
+      if(station.ds100 == this.areaStations[0].identifier.ril100) {
+        amt = station.platforms.length + 1;
+      }
+    }
+    console.log("AMT: " + amt);
+    return amt;
   }
+
+  getRandomNumberInRange(min: number, max: number) : number{
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    console.log("MIN: " + min + " MAX: " + max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
 }

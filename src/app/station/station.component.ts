@@ -1,3 +1,7 @@
+import {Component, Input} from '@angular/core';
+import {FormControl} from "@angular/forms";
+import {map, Observable, startWith} from "rxjs";
+
 @Component({
   selector: 'app-station',
   templateUrl: './station.component.html',
@@ -5,8 +9,7 @@
 })
 
 export class StationComponent {
-  @Input() stations: any = [];
-  @Input() currentStation: any = [];
+  @Input() areaStations: any = [];
   stationControl = new FormControl('');
   filteredStations: Observable<any[]>;
 
@@ -19,12 +22,8 @@ export class StationComponent {
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.stations.filter((station: any) => station.name.toLowerCase().includes(filterValue));
-
+    return this.areaStations.filter((station: any) => station.name.toLowerCase().includes(filterValue));
   }
 }
 
-import {Component, Input} from '@angular/core';
-import {FormControl} from "@angular/forms";
 
-import {map, Observable, startWith} from "rxjs";

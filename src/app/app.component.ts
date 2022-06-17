@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {environment} from "../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from 'rxjs';
 import {LocationService} from "./services/location.service";
@@ -15,34 +14,59 @@ import {LocationService} from "./services/location.service";
 export class AppComponent {
   title = 'DeutscheBahnHitchhiker';
 
-  currentStationArray: any = [];
-  areaStationsArray: any = [];
+  areaStations: any = [];
+  maxStationsToGo: number = 0;
 
 
   constructor(private http: HttpClient, private service: LocationService) {
-    service.getPosition().then(pos => {
-      this.getZipCode(pos.lat, pos.lng).subscribe(zipResponse => {
-        this.getStationsByZip(zipResponse.address.postcode).subscribe(stationResponse => {
-          this.currentStationArray = stationResponse;
-          console.log(stationResponse[0].ds100)
-        });
-        this.getStationsByStartOfZip(zipResponse.address.postcode).subscribe(areaStationResponse => {
-          this.areaStationsArray = areaStationResponse;
+    service.getPosition().then(position => {
+
+      this.getStationByLatLng(position.lat, position.lng).subscribe(stationResponse => {
+        this.areaStations = stationResponse;
+
+        this.getDepartureBoard(stationResponse[0].evaNumber).subscribe(departureBoardResponse => {
+
+          this.getTrainNextStops(departureBoardResponse[0].jid).subscribe(nextTrainSpotsResponse => {
+
+            this.maxStationsToGo = this.getAmountOfStopsUntilEnd(stationResponse[0].name, nextTrainSpotsResponse.stops)
+          })
         })
       })
     })
   }
 
-  getZipCode(lat: number, lon: number): Observable<any> {
-    return this.http.get(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+  getStationByLatLng(lat: number, lng: number): Observable<any> {
+    console.log(`https://marudor.de/api/stopPlace/v1/geoSearch?lat=${lat}&lng=${lng}`);
+    return this.http.get(`https://marudor.de/api/stopPlace/v1/geoSearch?lat=${lat}&lng=${lng}`);
   }
 
-  getStationsByZip(zipCode: string): Observable<any> {
-    return this.http.get(`${environment.uri}/stations?zipCode=${zipCode}`);
+  getDepartureBoard(stationId: string): Observable<any> {
+    console.log(`https://marudor.de/api/hafas/v2/departureStationBoard?station=${stationId}`);
+    return this.http.get(`https://marudor.de/api/hafas/v2/departureStationBoard?station=${stationId}`);
   }
 
-  getStationsByStartOfZip(zipCode: string): Observable<any> {
-    return this.http.get(`${environment.uri}/stations?zipCode=${zipCode.substring(0,2)}`);
+  getTrainNextStops(trainId: string): Observable<any> {
+    console.log(`https://marudor.de/api/hafas/v2/journeyDetails?jid=${trainId}`);
+    return this.http.get(`https://marudor.de/api/hafas/v2/journeyDetails?jid=${trainId}`);
   }
+
+  getAmountOfStopsUntilEnd(waitingStop: string, allStops: []) {
+    let stopBefore: boolean = true;
+    let integer: number = 1;
+
+    for (let stop of allStops) {
+
+      if(stop["station"]["title"] == waitingStop) {
+        stopBefore = false;
+      }
+
+      if(!stopBefore) {
+        integer++;
+      }
+    }
+
+    return integer;
+  }
+
 }
 
